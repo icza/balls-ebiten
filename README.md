@@ -12,4 +12,5 @@ Another variant using [go-sdl2](https://github.com/veandco/go-sdl2) for graphics
 [github.com/icza/balls-sdl](https://github.com/icza/balls-sdl).
 
 Screenshot:
-TODO
+
+![Bouncing Balls Ebiten v1.0.0 screenshot](screenshots/balls-ebiten-v1.0.0.png)
