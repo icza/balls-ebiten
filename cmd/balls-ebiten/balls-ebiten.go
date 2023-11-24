@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/icza/balls-ebiten/engine"
 )
 
 const (
@@ -16,19 +17,23 @@ const (
 )
 
 type Game struct {
+	eng *engine.Engine // eng is the engine
 }
 
 func (g *Game) Update() error {
+	g.eng.Update()
+
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	g.eng.Present(screen)
 }
 
-const width, height = 800, 550
+const w, h = 800, 550
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return width, height
+	return w, h
 }
 
 func main() {
@@ -36,9 +41,11 @@ func main() {
 	fmt.Println("Home page:", homePage)
 
 	ebiten.SetWindowTitle(title)
-	ebiten.SetWindowSize(width, height)
+	ebiten.SetWindowSize(w, h)
 
-	g := &Game{}
+	g := &Game{
+		eng: engine.NewEngine(w, h),
+	}
 
 	if err := ebiten.RunGame(g); err != nil {
 		log.Printf("RunGame() error: %v", err)
