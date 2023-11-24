@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -18,6 +19,7 @@ const (
 )
 
 type Game struct {
+	tl  *typeListener
 	eng *engine.Engine // eng is the engine
 }
 
@@ -26,13 +28,16 @@ func (g *Game) handleInputs() {
 
 	shift := ebiten.IsKeyPressed(ebiten.KeyShift)
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
+	tl := g.tl
+	tl.now = time.Now()
+
+	if tl.Typed(ebiten.KeyS) {
 		eng.ChangeSpeed(shift)
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyA) {
+	if tl.Typed(ebiten.KeyA) {
 		eng.ChangeMaxBalls(shift)
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyM) {
+	if tl.Typed(ebiten.KeyM) {
 		eng.ChangeMinMaxBallRatio(shift)
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyR) {
@@ -41,14 +46,12 @@ func (g *Game) handleInputs() {
 	if inpututil.IsKeyJustPressed(ebiten.KeyO) {
 		eng.ToggleOSD()
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyG) {
+	if tl.Typed(ebiten.KeyG) {
 		eng.ChangeGravityAbs(shift)
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyT) {
+	if tl.Typed(ebiten.KeyT) {
 		eng.RotateGravity(shift)
 	}
-
-	// TODO add to screen
 	if inpututil.IsKeyJustPressed(ebiten.KeyF) {
 		ebiten.SetFullscreen(!ebiten.IsFullscreen())
 	}
@@ -85,10 +88,32 @@ func main() {
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	g := &Game{
+		tl:  newTypeListener(),
 		eng: engine.NewEngine(w, h),
 	}
 
 	if err := ebiten.RunGame(g); err != nil {
 		log.Printf("RunGame() error: %v", err)
 	}
+}
+
+type typeListener struct {
+	now       time.Time
+	lastTyped map[ebiten.Key]time.Time // Zero time is good for initial value
+}
+
+func newTypeListener() *typeListener {
+	return &typeListener{
+		lastTyped: map[ebiten.Key]time.Time{},
+	}
+}
+
+func (tl *typeListener) Typed(key ebiten.Key) bool {
+	if ebiten.IsKeyPressed(key) {
+		if tl.now.Sub(tl.lastTyped[key]) > 200*time.Millisecond {
+			tl.lastTyped[key] = tl.now
+			return true
+		}
+	}
+	return false
 }

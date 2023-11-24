@@ -72,7 +72,7 @@ func (s *scene) paintOSD(ctx *gfx.Context) {
 		{"G/g", "abs gravity: %.2f", cmplx.Abs(s.e.gravity) / maxAbsGravity},
 		{"T/t", "rotate gravity: %3d deg", degree},
 		{"M/m", "min/max ball ratio: %.1f", float64(s.e.minMaxBallRatio) / 100},
-		{"F/f", "fullscreen", nil},
+		{"F", "fullscreen", nil},
 	}
 
 	col2x := func(col int) int { return col*210 + 10 }
