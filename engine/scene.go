@@ -28,12 +28,11 @@ func newScene(e *Engine) *scene {
 func (s *scene) present(screen *ebiten.Image) {
 	ctx := gfx.NewContext(screen)
 
-	// Paint background and frame:
+	// Paint frame:
 	ctx.SetColorRGBA(100, 100, 100, 255)
 	ctx.Rectangle(0, 0, s.e.w, s.e.h)
 
 	// Paint balls:
-	ctx.SetColorRGBA(200, 80, 0, 255)
 	for _, b := range s.e.balls {
 		s.paintBall(ctx, b)
 	}
@@ -63,7 +62,7 @@ func (s *scene) paintOSD(ctx *gfx.Context) {
 	items := []struct {
 		keys   string
 		format string
-		param  interface{}
+		param  any
 	}{
 		{"R", "restart", nil},
 		{"Q/X", "quit", nil},
@@ -73,6 +72,7 @@ func (s *scene) paintOSD(ctx *gfx.Context) {
 		{"G/g", "abs gravity: %.2f", cmplx.Abs(s.e.gravity) / maxAbsGravity},
 		{"T/t", "rotate gravity: %3d deg", degree},
 		{"M/m", "min/max ball ratio: %.1f", float64(s.e.minMaxBallRatio) / 100},
+		{"F/f", "fullscreen", nil},
 	}
 
 	col2x := func(col int) int { return col*210 + 10 }
@@ -86,7 +86,7 @@ func (s *scene) paintOSD(ctx *gfx.Context) {
 
 	row, col := 0, 0
 	for _, it := range items {
-		params := []interface{}{"[" + it.keys + "]"}
+		params := []any{"[" + it.keys + "]"}
 		if it.param != nil {
 			params = append(params, it.param)
 		}
