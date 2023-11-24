@@ -11,6 +11,11 @@ You can find a variant of this using [go.wde](https://github.com/skelterjohn/go.
 Another variant using [go-sdl2](https://github.com/veandco/go-sdl2) for graphics and events:
 [github.com/icza/balls-sdl](https://github.com/icza/balls-sdl).
 
+Animation:
+
+![Bouncing Balls Ebiten v1.0.0 screenshot](screenshots/balls-ebiten-v1.0.0.gif)
+
+
 Screenshot:
 
 ![Bouncing Balls Ebiten v1.0.0 screenshot](screenshots/balls-ebiten-v1.0.0.png)
