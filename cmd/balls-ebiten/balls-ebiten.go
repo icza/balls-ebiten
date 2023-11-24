@@ -97,6 +97,7 @@ func main() {
 	}
 }
 
+// typeListener is a helper to tell if a key is pressed for more than a given time to simulate typing if hold down.
 type typeListener struct {
 	now       time.Time
 	lastTyped map[ebiten.Key]time.Time // Zero time is good for initial value
@@ -108,6 +109,7 @@ func newTypeListener() *typeListener {
 	}
 }
 
+// Typed returns true if the given key is kept pressed for more than a limit.
 func (tl *typeListener) Typed(key ebiten.Key) bool {
 	if ebiten.IsKeyPressed(key) {
 		if tl.now.Sub(tl.lastTyped[key]) > 200*time.Millisecond {
