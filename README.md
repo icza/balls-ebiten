@@ -5,6 +5,8 @@
 
 Bouncing balls demo written in Go, using [Ebiten](https://github.com/hajimehoshi/ebiten) for graphics and events.
 
+Try it online: [Bouncing Balls Ebiten v1.0.0 WASM demo](https://icza.github.io/balls-ebiten/)
+
 You can find a variant of this using [go.wde](https://github.com/skelterjohn/go.wde) for graphics and events here:
 [github.com/icza/balls-wde](https://github.com/icza/balls-wde).
 
